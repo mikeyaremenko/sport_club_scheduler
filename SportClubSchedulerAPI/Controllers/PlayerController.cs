@@ -8,14 +8,6 @@ namespace SportClubSchedulerAPI.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private static List<Player> players = new()
-        {
-            new Player() { Id = 1, Name = "Fred", Height = 190 },
-            new Player() { Id = 2, Name = "George", Height = 173 },
-            new Player() { Id = 3, Name = "Alina", Height = 176 },
-            new Player() { Id = 4, Name = "Tom", Height = 205 },
-            new Player() { Id = 5, Name = "Sarah", Height = 161 }
-        };
         private readonly DataContext dataContext;
 
         public PlayerController(DataContext dataContext)
