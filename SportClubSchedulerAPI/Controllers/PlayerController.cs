@@ -18,13 +18,13 @@ namespace SportClubSchedulerAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Player>>> Get()
         {
-            return Ok(await dataContext.Players.ToListAsync());
+            return Ok(await dataContext.Player.ToListAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> Get(int id)
         {
-            var player = await dataContext.Players.FindAsync(id);
+            var player = await dataContext.Player.FindAsync(id);
             if (player == null)
                 return BadRequest("Player not fouind");
             return Ok(player);
@@ -33,38 +33,39 @@ namespace SportClubSchedulerAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<List<Player>>> AddPlayer(Player player)
         {
-            dataContext.Players.Add(player);
+            dataContext.Player.Add(player);
             await dataContext.SaveChangesAsync();
 
-            return Ok(await dataContext.Players.ToListAsync());
+            return Ok(await dataContext.Player.ToListAsync());
         }
 
         [HttpPut]
         public async Task<ActionResult<Player>> UpdatePlayer(Player requestPlayer)
         {
-            var dbPlayer = await dataContext.Players.FindAsync(requestPlayer.Id);
+            var dbPlayer = await dataContext.Player.FindAsync(requestPlayer.Id);
             if (dbPlayer == null)
                 return BadRequest("Player not fouind");
 
-            dbPlayer.Name = requestPlayer.Name;
+            dbPlayer.FirstName = requestPlayer.FirstName;
+            dbPlayer.LastName = requestPlayer.LastName;
             dbPlayer.Height = requestPlayer.Height;
 
             await dataContext.SaveChangesAsync();
 
-            return Ok(await dataContext.Players.ToListAsync());
+            return Ok(await dataContext.Player.ToListAsync());
         }
 
         [HttpDelete]
         public async Task<ActionResult<List<Player>>> DeletePlayer(int id)
         {
-            var player = await dataContext.Players.FindAsync(id);
+            var player = await dataContext.Player.FindAsync(id);
             if (player == null)
                 return BadRequest("Player not fouind");
 
-            dataContext.Players.Remove(player);
+            dataContext.Player.Remove(player);
             await dataContext.SaveChangesAsync();
 
-            return Ok(await dataContext.Players.ToListAsync());
+            return Ok(await dataContext.Player.ToListAsync());
         }
     }
 }

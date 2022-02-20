@@ -12,8 +12,8 @@ using SportClubSchedulerAPI.Data;
 namespace SportClubSchedulerAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220220124902_CreateMissingEntities")]
-    partial class CreateMissingEntities
+    [Migration("20220220125744_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,7 +53,7 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Club", b =>
@@ -73,7 +73,7 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clubs");
+                    b.ToTable("Club");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Equipment", b =>
@@ -84,6 +84,9 @@ namespace SportClubSchedulerAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("HallId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -91,14 +94,11 @@ namespace SportClubSchedulerAPI.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SportHallId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SportHallId");
+                    b.HasIndex("HallId");
 
-                    b.ToTable("Equipments");
+                    b.ToTable("Equipment");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.GamingSchedule", b =>
@@ -136,6 +136,28 @@ namespace SportClubSchedulerAPI.Migrations
                     b.ToTable("GamingSchedule");
                 });
 
+            modelBuilder.Entity("SportClubSchedulerAPI.Models.Hall", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Hall");
+                });
+
             modelBuilder.Entity("SportClubSchedulerAPI.Models.League", b =>
                 {
                     b.Property<int>("Id")
@@ -153,7 +175,7 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Leagues");
+                    b.ToTable("League");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Player", b =>
@@ -183,29 +205,7 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.HasIndex("TrainingScheduleId");
 
-                    b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.SportHall", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("SportHalls");
+                    b.ToTable("Player");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Team", b =>
@@ -227,7 +227,7 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.TrainingSchedule", b =>
@@ -258,9 +258,9 @@ namespace SportClubSchedulerAPI.Migrations
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Equipment", b =>
                 {
-                    b.HasOne("SportClubSchedulerAPI.Models.SportHall", null)
+                    b.HasOne("SportClubSchedulerAPI.Models.Hall", null)
                         .WithMany("Equipments")
-                        .HasForeignKey("SportHallId");
+                        .HasForeignKey("HallId");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.GamingSchedule", b =>
@@ -277,7 +277,7 @@ namespace SportClubSchedulerAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportClubSchedulerAPI.Models.SportHall", "SportHall")
+                    b.HasOne("SportClubSchedulerAPI.Models.Hall", "SportHall")
                         .WithMany()
                         .HasForeignKey("SportHallId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -290,18 +290,7 @@ namespace SportClubSchedulerAPI.Migrations
                     b.Navigation("SportHall");
                 });
 
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.Player", b =>
-                {
-                    b.HasOne("SportClubSchedulerAPI.Models.Team", null)
-                        .WithMany("Players")
-                        .HasForeignKey("TeamId");
-
-                    b.HasOne("SportClubSchedulerAPI.Models.TrainingSchedule", null)
-                        .WithMany("Players")
-                        .HasForeignKey("TrainingScheduleId");
-                });
-
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.SportHall", b =>
+            modelBuilder.Entity("SportClubSchedulerAPI.Models.Hall", b =>
                 {
                     b.HasOne("SportClubSchedulerAPI.Models.Address", "Address")
                         .WithMany()
@@ -310,6 +299,17 @@ namespace SportClubSchedulerAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("SportClubSchedulerAPI.Models.Player", b =>
+                {
+                    b.HasOne("SportClubSchedulerAPI.Models.Team", null)
+                        .WithMany("Player")
+                        .HasForeignKey("TeamId");
+
+                    b.HasOne("SportClubSchedulerAPI.Models.TrainingSchedule", null)
+                        .WithMany("Player")
+                        .HasForeignKey("TrainingScheduleId");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Team", b =>
@@ -321,7 +321,7 @@ namespace SportClubSchedulerAPI.Migrations
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.TrainingSchedule", b =>
                 {
-                    b.HasOne("SportClubSchedulerAPI.Models.SportHall", "SportHall")
+                    b.HasOne("SportClubSchedulerAPI.Models.Hall", "SportHall")
                         .WithMany()
                         .HasForeignKey("SportHallId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -343,19 +343,19 @@ namespace SportClubSchedulerAPI.Migrations
                     b.Navigation("Teams");
                 });
 
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.SportHall", b =>
+            modelBuilder.Entity("SportClubSchedulerAPI.Models.Hall", b =>
                 {
                     b.Navigation("Equipments");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Team", b =>
                 {
-                    b.Navigation("Players");
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.TrainingSchedule", b =>
                 {
-                    b.Navigation("Players");
+                    b.Navigation("Player");
                 });
 #pragma warning restore 612, 618
         }
