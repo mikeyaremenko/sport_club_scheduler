@@ -7,14 +7,14 @@ namespace SportClubSchedulerAPI.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<Player> Player { get; set; }
-        public DbSet<Equipment> Equipment { get; set; }
-        public DbSet<League> League { get; set; }
-        public DbSet<Address> Address { get; set; }
-        public DbSet<Hall> Hall { get; set; }
-        public DbSet<Team> Team { get; set; }
-        public DbSet<Club> Club { get; set; }
-        public DbSet<TrainingSchedule> TrainingSchedule { get; set; }
-        public DbSet<GamingSchedule> GamingSchedule { get; set; }
+        public DbSet<Player> Player { get; set; } = default!;
+        public DbSet<Equipment> Equipment { get; set; } = default!;
+        public DbSet<League> League { get; set; } = default!;
+        public DbSet<Address> Address { get; set; } = default!;
+        public DbSet<Hall> Hall { get; set; } = default!;
+        public DbSet<Team> Team { get; set; } = default!;
+        public DbSet<Club> Club { get; set; } = default!;
+        public DbSet<TrainingSchedule> TrainingSchedule { get; set; } = default!;
+        public DbSet<GamingSchedule> GamingSchedule { get; set; } = default!;
     }
 }
