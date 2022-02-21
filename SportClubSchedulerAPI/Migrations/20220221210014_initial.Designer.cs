@@ -12,7 +12,7 @@ using SportClubSchedulerAPI.Data;
 namespace SportClubSchedulerAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220220125744_initial")]
+    [Migration("20220221210014_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,22 +34,27 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("Organisation")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("StreetAddressLine")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ZipCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
 
@@ -66,74 +71,16 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Website")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Club");
-                });
-
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.Equipment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("HallId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HallId");
-
-                    b.ToTable("Equipment");
-                });
-
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.GamingSchedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("GuestTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HomeTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Result")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SportHallId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuestTeamId");
-
-                    b.HasIndex("HomeTeamId");
-
-                    b.HasIndex("SportHallId");
-
-                    b.ToTable("GamingSchedule");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Hall", b =>
@@ -149,7 +96,8 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -168,7 +116,8 @@ namespace SportClubSchedulerAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Rang")
                         .HasColumnType("int");
@@ -186,24 +135,25 @@ namespace SportClubSchedulerAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("Height")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int?>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TrainingScheduleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeamId");
-
-                    b.HasIndex("TrainingScheduleId");
 
                     b.ToTable("Player");
                 });
@@ -230,66 +180,6 @@ namespace SportClubSchedulerAPI.Migrations
                     b.ToTable("Team");
                 });
 
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.TrainingSchedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SportHallId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SportHallId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("TrainingSchedule");
-                });
-
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.Equipment", b =>
-                {
-                    b.HasOne("SportClubSchedulerAPI.Models.Hall", null)
-                        .WithMany("Equipments")
-                        .HasForeignKey("HallId");
-                });
-
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.GamingSchedule", b =>
-                {
-                    b.HasOne("SportClubSchedulerAPI.Models.Team", "GuestTeam")
-                        .WithMany()
-                        .HasForeignKey("GuestTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportClubSchedulerAPI.Models.Team", "HomeTeam")
-                        .WithMany()
-                        .HasForeignKey("HomeTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportClubSchedulerAPI.Models.Hall", "SportHall")
-                        .WithMany()
-                        .HasForeignKey("SportHallId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GuestTeam");
-
-                    b.Navigation("HomeTeam");
-
-                    b.Navigation("SportHall");
-                });
-
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Hall", b =>
                 {
                     b.HasOne("SportClubSchedulerAPI.Models.Address", "Address")
@@ -306,10 +196,6 @@ namespace SportClubSchedulerAPI.Migrations
                     b.HasOne("SportClubSchedulerAPI.Models.Team", null)
                         .WithMany("Player")
                         .HasForeignKey("TeamId");
-
-                    b.HasOne("SportClubSchedulerAPI.Models.TrainingSchedule", null)
-                        .WithMany("Player")
-                        .HasForeignKey("TrainingScheduleId");
                 });
 
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Team", b =>
@@ -319,41 +205,12 @@ namespace SportClubSchedulerAPI.Migrations
                         .HasForeignKey("ClubId");
                 });
 
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.TrainingSchedule", b =>
-                {
-                    b.HasOne("SportClubSchedulerAPI.Models.Hall", "SportHall")
-                        .WithMany()
-                        .HasForeignKey("SportHallId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportClubSchedulerAPI.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SportHall");
-
-                    b.Navigation("Team");
-                });
-
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Club", b =>
                 {
                     b.Navigation("Teams");
                 });
 
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.Hall", b =>
-                {
-                    b.Navigation("Equipments");
-                });
-
             modelBuilder.Entity("SportClubSchedulerAPI.Models.Team", b =>
-                {
-                    b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("SportClubSchedulerAPI.Models.TrainingSchedule", b =>
                 {
                     b.Navigation("Player");
                 });
